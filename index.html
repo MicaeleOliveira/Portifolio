@@ -17,6 +17,11 @@
             --accent: #C084FC;
             --text: #1F2937;
             --bg-gradient: linear-gradient(135deg, #8B5CF6, #C084FC);
+            --night-primary: #9F7AEA;
+            --night-secondary: #2D3748;
+            --night-accent: #B794F4;
+            --night-text: #E2E8F0;
+            --night-bg: #1A202C;
         }
 
         * {
@@ -33,23 +38,12 @@
         }
 
         .nav {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(139, 92, 246, 0.1);
-        }
-
-        .nav-content {
-            max-width: 1200px;
-            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 20px;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
         }
 
         .logo {
@@ -57,6 +51,7 @@
             font-weight: 700;
             background: var(--bg-gradient);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: -0.5px;
         }
@@ -73,6 +68,7 @@
             background: var(--secondary);
             position: relative;
             overflow: hidden;
+            min-height: 100vh;
         }
 
         .hero::before {
@@ -90,6 +86,7 @@
         .hero-content {
             position: relative;
             z-index: 1;
+            transform: none !important;
         }
 
         .hero h1 {
@@ -97,6 +94,7 @@
             margin-bottom: 20px;
             background: var(--bg-gradient);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             font-weight: 800;
         }
@@ -144,9 +142,30 @@
             background: white;
             border-radius: 24px;
             padding: 2rem;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             border: 1px solid rgba(139, 92, 246, 0.1);
+            transform: translateY(30px);
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            opacity: 1 !important;
+        }
+
+        .skill-card.floating {
+            animation: floatCard 3s ease-in-out infinite;
+            opacity: 1 !important;
+        }
+
+        @keyframes floatCard {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(139, 92, 246, 0.15);
         }
 
         .skill-card::before {
@@ -386,20 +405,298 @@
                 top: 0;
             }
         }
+
+        /* Elementos flutuantes */
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .floating-item {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0;
+            animation: randomFloat 20s linear infinite;
+            transform-origin: center;
+            filter: blur(10px);
+        }
+
+        @keyframes randomFloat {
+            0% {
+                opacity: 0;
+                filter: blur(10px);
+                transform: translate(var(--startX), 120%) rotate(0deg) scale(0.5);
+            }
+            5% {
+                opacity: 1;
+                filter: blur(0px);
+                transform: translate(var(--startX), 100%) rotate(var(--startRotation)) scale(1);
+            }
+            85% {
+                opacity: 1;
+                filter: blur(0px);
+            }
+            100% {
+                opacity: 0;
+                filter: blur(10px);
+                transform: translate(var(--endX), -20%) rotate(var(--endRotation)) scale(0.5);
+            }
+        }
+
+        /* Balão de motivação */
+        .motivation-bubble {
+            background: white;
+            padding: 1rem 2rem;
+            border-radius: 20px;
+            position: relative;
+            margin: 2rem auto;
+            max-width: 300px;
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.2);
+            transform: none !important;
+        }
+
+        .motivation-bubble::before {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: white transparent transparent;
+        }
+
+        .motivation-bubble.floating {
+            animation: floatBubble 3s ease-in-out infinite;
+        }
+
+        @keyframes floatBubble {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Modo noturno */
+        body.dark-mode {
+            background: var(--night-bg);
+            color: var(--night-text);
+        }
+
+        body.dark-mode .nav {
+            background: rgba(26, 32, 44, 0.8);
+        }
+
+        body.dark-mode .hero {
+            background: var(--night-secondary);
+        }
+
+        body.dark-mode .skill-card {
+            background: var(--night-secondary);
+            border-color: var(--night-primary);
+        }
+
+        body.dark-mode .motivation-bubble {
+            background: var(--night-secondary);
+            color: var(--night-text);
+        }
+
+        body.dark-mode .motivation-bubble::before {
+            border-top-color: var(--night-secondary);
+        }
+
+        .theme-toggle {
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(360deg);
+        }
+
+        /* Animação de corações no hero */
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, var(--primary-light) 0%, transparent 10%),
+                radial-gradient(circle at 80% 40%, var(--primary-light) 0%, transparent 10%),
+                radial-gradient(circle at 40% 80%, var(--primary-light) 0%, transparent 10%),
+                radial-gradient(circle at 70% 60%, var(--primary-light) 0%, transparent 10%);
+            animation: pulseHearts 4s ease-in-out infinite;
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        @keyframes pulseHearts {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Melhorar a timeline */
+        .learning-path {
+            position: relative;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.1);
+            overflow: hidden;
+        }
+
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            margin-top: 3rem;
+            padding: 0 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-light), var(--accent));
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .timeline-point {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+            border: 2px solid var(--primary-light);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .timeline-point:hover {
+            transform: translateY(-5px);
+            background: var(--bg-gradient);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* Efeito de digitação */
+        .typing-effect {
+            display: inline-block;
+            border-right: 3px solid var(--primary);
+            white-space: nowrap;
+            overflow: hidden;
+            animation: typing 3.5s steps(30, end), blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary) }
+        }
+
+        .progress-chart {
+            width: 100%;
+            height: 300px;
+            margin: 2rem 0;
+            position: relative;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 16px;
+            padding: 1rem;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.1);
+        }
+
+        .chart-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            color: var(--primary-dark);
+            font-weight: 500;
+        }
+
+        .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card h3 {
+            color: var(--primary-dark);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--bg-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .contact .button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .contact .button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+        }
     </style>
+    <!-- Adicionar no head, junto com os outros scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="progress-bar"></div>
     <div class="cursor-glow"></div>
 
     <nav class="nav">
-        <div class="nav-content">
-            <div class="logo">M.</div>
-            <div href="mailto:micaeleoliveira7878@gmail.com" class="button">Conecte-se ✨</div>
+        <div class="logo floating">M✨</div>
+        <div class="theme-toggle">
+            <span class="moon">🌙</span>
+            <span class="sun">☀️</span>
         </div>
     </nav>
 
     <div class="hero">
+        <div class="floating-elements">
+            <!-- Os emojis serão adicionados dinamicamente via JavaScript -->
+        </div>
         <div class="hero-content">
             <h1>Micaele</h1>
             <p>Estudante dedicada em Monitoramento de Infraestrutura, 
@@ -408,6 +705,9 @@
                 <div class="badge"><span>📚</span> Estudante Tech</div>
                 <div class="badge"><span>🎯</span> Foco em Monitoramento</div>
                 <div class="badge"><span>💜</span> Aprendendo Sempre</div>
+            </div>
+            <div class="motivation-bubble floating">
+                "Cada dia é uma nova oportunidade de brilhar ✨"
             </div>
         </div>
     </div>
@@ -453,18 +753,29 @@
 
         <div class="learning-path">
             <h2>Minha Jornada de Aprendizado ✨</h2>
-            <div class="timeline">
-                <div class="timeline-point">Início dos Estudos</div>
-                <div class="timeline-point">Primeiros Projetos</div>
-                <div class="timeline-point">Aperfeiçoamento</div>
-                <div class="timeline-point">Próximos Passos</div>
+            <div class="progress-chart">
+                <canvas id="learningChart"></canvas>
+            </div>
+            <div class="chart-labels">
+                <div class="start-date">Junho 2024</div>
+                <div class="current-date">Hoje</div>
+            </div>
+            <div class="progress-stats">
+                <div class="stat-card">
+                    <h3>Dias de Estudo</h3>
+                    <span class="stat-value" id="studyDays">0</span>
+                </div>
+                <div class="stat-card">
+                    <h3>Progresso Estimado</h3>
+                    <span class="stat-value" id="progressPercent">0%</span>
+                </div>
             </div>
         </div>
 
         <div class="contact">
             <h2>Vamos Trocar Experiências? ✨</h2>
             <p>Estou sempre aberta a conectar com outros estudantes e profissionais da área!</p>
-            <a href="mailto:micaeleoliveira7878@gmail.com" class="button">Entre em Contato</a>
+            <a href="mailto:micaeleoliveira7878@gmail.com" class="button">Entre em Contato 📧</a>
         </div>
     </div>
 
@@ -519,8 +830,7 @@
                     toggleActions: 'play none none reverse'
                 },
                 duration: 0.8,
-                y: 100,
-                opacity: 0,
+                y: 50,
                 rotation: 5,
                 delay: index * 0.2,
                 ease: 'power2.out'
@@ -616,6 +926,331 @@
                 duration: 0.3,
                 ease: 'power2.out'
             });
+        });
+
+        // Controle do modo noturno
+        const themeToggle = document.querySelector('.theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+        });
+
+        function initFloatingElements() {
+            const emojis = ['🌙', '⭐', '🚀', '🌈', '☁️', '✨', '💫', '🌟'];
+            const container = document.querySelector('.floating-elements');
+            let activeEmojis = 0;
+            const maxEmojis = 20; // Aumentado para 20
+            let isMouseInPage = false;
+            let animationInterval;
+
+            function createEmoji() {
+                if (!isMouseInPage || activeEmojis >= maxEmojis) return;
+                
+                const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+                const element = document.createElement('div');
+                element.className = 'floating-item';
+                element.textContent = emoji;
+                
+                // Dividir a tela em seções para melhor distribuição
+                const sections = 5;
+                const sectionWidth = 100 / sections;
+                const availableSections = Array.from({length: sections}, (_, i) => i)
+                    .filter(section => {
+                        const sectionStart = section * sectionWidth;
+                        const sectionEnd = (section + 1) * sectionWidth;
+                        const existingEmojis = Array.from(container.children);
+                        return !existingEmojis.some(emoji => {
+                            const emojiLeft = parseFloat(emoji.style.left);
+                            return emojiLeft >= sectionStart && emojiLeft < sectionEnd;
+                        });
+                    });
+                
+                if (availableSections.length === 0) return;
+                
+                const randomSection = availableSections[Math.floor(Math.random() * availableSections.length)];
+                const startX = (randomSection * sectionWidth) + (Math.random() * (sectionWidth - 10));
+                const horizontalTravel = (Math.random() * 20 - 10); // Movimento lateral reduzido
+                const endX = Math.max(5, Math.min(95, startX + horizontalTravel));
+                
+                const startRotation = Math.random() * 180 - 90;
+                const endRotation = startRotation + (Math.random() * 360 - 180);
+                
+                element.style.setProperty('--startX', `${startX}%`);
+                element.style.setProperty('--endX', `${endX}%`);
+                element.style.setProperty('--startRotation', `${startRotation}deg`);
+                element.style.setProperty('--endRotation', `${endRotation}deg`);
+                element.style.left = `${startX}%`;
+                
+                activeEmojis++;
+                container.appendChild(element);
+                
+                element.addEventListener('animationend', () => {
+                    element.remove();
+                    activeEmojis--;
+                });
+            }
+
+            function startEmojis() {
+                if (!isMouseInPage) return;
+                
+                // Criar emojis iniciais
+                for(let i = 0; i < Math.min(5, maxEmojis); i++) {
+                    setTimeout(createEmoji, i * 800);
+                }
+                
+                // Continuar criando emojis enquanto o mouse estiver na página
+                animationInterval = setInterval(() => {
+                    if (Math.random() > 0.3) { // 70% de chance de criar um novo emoji
+                        createEmoji();
+                    }
+                }, 2000);
+            }
+
+            function stopEmojis() {
+                if (animationInterval) {
+                    clearInterval(animationInterval);
+                }
+            }
+
+            // Detectar quando o mouse entra na página
+            document.addEventListener('mouseenter', () => {
+                isMouseInPage = true;
+                startEmojis();
+            });
+
+            // Detectar quando o mouse sai da página
+            document.addEventListener('mouseleave', () => {
+                isMouseInPage = false;
+                stopEmojis();
+            });
+
+            // Limpar emojis existentes quando o mouse sair
+            document.addEventListener('mouseleave', () => {
+                setTimeout(() => {
+                    if (!isMouseInPage) {
+                        const existingEmojis = container.querySelectorAll('.floating-item');
+                        existingEmojis.forEach(emoji => {
+                            emoji.style.animation = 'none';
+                            emoji.style.opacity = '0';
+                            setTimeout(() => emoji.remove(), 500);
+                        });
+                        activeEmojis = 0;
+                    }
+                }, 1000);
+            });
+        }
+
+        // Inicializar o sistema de emojis
+        initFloatingElements();
+
+        // Frases motivacionais rotativas
+        const motivationalQuotes = [
+            "Cada dia é uma nova oportunidade de brilhar ✨",
+            "Sonhe grande, alcance as estrelas 🌟",
+            "Sua jornada é única e especial 🚀",
+            "O limite é apenas o começo ⭐",
+            "Transforme desafios em conquistas 💫"
+        ];
+
+        const motivationBubble = document.querySelector('.motivation-bubble');
+        let currentQuoteIndex = 0;
+
+        setInterval(() => {
+            currentQuoteIndex = (currentQuoteIndex + 1) % motivationalQuotes.length;
+            gsap.to(motivationBubble, {
+                opacity: 0,
+                y: -20,
+                duration: 0.5,
+                onComplete: () => {
+                    motivationBubble.textContent = motivationalQuotes[currentQuoteIndex];
+                    gsap.to(motivationBubble, {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.5
+                    });
+                }
+            });
+        }, 5000);
+
+        // Adicionar animação para a timeline
+        gsap.from('.timeline-point', {
+            scrollTrigger: {
+                trigger: '.learning-path',
+                start: 'top center+=100',
+                toggleActions: 'play none none reverse'
+            },
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.2,
+            ease: 'back.out(1.7)'
+        });
+
+        // Adicionar efeito hover na timeline
+        document.querySelectorAll('.timeline-point').forEach(point => {
+            point.addEventListener('mouseenter', () => {
+                gsap.to(point, {
+                    scale: 1.1,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+            
+            point.addEventListener('mouseleave', () => {
+                gsap.to(point, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            });
+        });
+
+        // Adicionar efeito de digitação ao nome
+        document.addEventListener('DOMContentLoaded', function() {
+            const nameElement = document.querySelector('.hero h1');
+            const nameText = nameElement.textContent;
+            nameElement.textContent = '';
+            nameElement.classList.add('typing-effect');
+            
+            let i = 0;
+            function typeWriter() {
+                if (i < nameText.length) {
+                    nameElement.textContent += nameText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 150);
+                }
+            }
+            
+            setTimeout(typeWriter, 500);
+        });
+
+        // Atualizar a animação de parallax para não afetar o posicionamento
+        gsap.to('.hero::before', {
+            scrollTrigger: {
+                trigger: '.hero',
+                start: 'top top',
+                end: 'bottom top',
+                scrub: true
+            },
+            y: 100,
+            ease: 'none'
+        });
+
+        // Função para calcular o progresso baseado no tempo
+        function calculateProgress() {
+            const startDate = new Date('2024-06-01');
+            const currentDate = new Date();
+            const totalDays = Math.floor((currentDate - startDate) / (1000 * 60 * 60 * 24));
+            
+            // Função logística para simular curva de aprendizado
+            function learningCurve(x) {
+                const k = 0.01; // Taxa de crescimento
+                const L = 100; // Valor máximo
+                const x0 = 180; // Ponto médio (em dias)
+                return L / (1 + Math.exp(-k * (x - x0)));
+            }
+            
+            const progress = learningCurve(totalDays);
+            return {
+                days: totalDays,
+                progress: Math.min(100, progress)
+            };
+        }
+
+        // Configurar e atualizar o gráfico
+        function setupLearningChart() {
+            const ctx = document.getElementById('learningChart').getContext('2d');
+            const startDate = new Date('2024-06-01');
+            const currentDate = new Date();
+            
+            // Gerar dados para o gráfico
+            const labels = [];
+            const data = [];
+            let currentPoint = new Date(startDate);
+            
+            while (currentPoint <= currentDate) {
+                labels.push(currentPoint.toLocaleDateString('pt-BR', { month: 'short' }));
+                const days = Math.floor((currentPoint - startDate) / (1000 * 60 * 60 * 24));
+                const progress = calculateProgress().progress * (days / calculateProgress().days);
+                data.push(progress);
+                currentPoint.setMonth(currentPoint.getMonth() + 1);
+            }
+            
+            const chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Progresso de Aprendizado',
+                        data: data,
+                        borderColor: '#8B5CF6',
+                        backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: value => `${value}%`
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Atualizar estatísticas
+            const stats = calculateProgress();
+            document.getElementById('studyDays').textContent = stats.days;
+            document.getElementById('progressPercent').textContent = `${Math.round(stats.progress)}%`;
+            
+            // Atualizar gráfico diariamente
+            setInterval(() => {
+                const newStats = calculateProgress();
+                chart.data.datasets[0].data = data;
+                chart.update();
+                document.getElementById('studyDays').textContent = newStats.days;
+                document.getElementById('progressPercent').textContent = `${Math.round(newStats.progress)}%`;
+            }, 86400000); // 24 horas
+        }
+
+        // Carregar Chart.js e inicializar o gráfico
+        document.addEventListener('DOMContentLoaded', () => {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+            script.onload = setupLearningChart;
+            document.head.appendChild(script);
+        });
+
+        // Atualizar a função initSkillCards
+        function initSkillCards() {
+            const cards = document.querySelectorAll('.skill-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('floating');
+                    }
+                });
+            }, {
+                threshold: 0.2
+            });
+
+            cards.forEach(card => observer.observe(card));
+        }
+
+        // Garantir que a função seja chamada
+        document.addEventListener('DOMContentLoaded', () => {
+            initSkillCards();
         });
     </script>
 </body>
